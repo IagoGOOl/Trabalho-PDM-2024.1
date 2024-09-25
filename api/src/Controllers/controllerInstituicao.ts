@@ -1,19 +1,18 @@
 import { Request, Response } from "express";
 import { prismaService } from '../Service/prismaService';
-import { strict } from "assert";
-import { error } from "console";
+
 
 export class InstituicaoController {
-  async create(req: Request, res: Response) {
+   async create(req: Request, res: Response) {
     const { name, latitude, longitude } = req.body;
-    if (!name) {
-      return res.status(400).json({ error: "Campo name obrigatorio" });
+    const userId = req.userID;
+
+    if (!userId) {
+      return res.status(401).json({ message: 'Usuário não autorizado' });
     }
-    if (!latitude) {
-      return res.status(400).json({ error: "Campo latitude obrigatorio" });
-    }
-    if (!longitude) {
-      return res.status(400).json({ error: "Campo longitude obrigatorio" });
+
+    if (!name || !latitude || !longitude) {
+      return res.status(400).json({ error: "Todos os campos são obrigatórios" });
     }
 
     try {
@@ -22,6 +21,7 @@ export class InstituicaoController {
           name,
           latitude,
           longitude,
+          createdById: userId,
         },
       });
       res.status(201).json({ message: "Instituição criada com sucesso" });
@@ -32,13 +32,21 @@ export class InstituicaoController {
 
   async readAll(req: Request, res: Response) {
     try {
-      const instituicao = await prismaService.instituicao.findMany();
-      res.status(200).json(instituicao);
+      const instituicoes = await prismaService.instituicao.findMany({
+        include: {
+          createdBy: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      });
+      res.status(200).json(instituicoes);
     } catch {
-      res.status(404).json({ message: "Istituições não encontradas" });
+      res.status(404).json({ message: "Instituições não encontradas" });
     }
   }
-
   async delete(req: Request, res: Response) {
     const { instituicaoId } = req.params;
     try {

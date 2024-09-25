@@ -8,19 +8,17 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
-  name     String
-  email    String @unique
-  password String
-  image    String?
-  posts Post[]
-  instituicao_id Int?
-  instituicao Instituicao? @relation(fields: [instituicao_id],references: [id])
-  comments Comment[]
+  id           Int            @id @default(autoincrement())
+  name         String
+  email        String         @unique
+  password     String
+  image        String?
+  posts        Post[]
+  comments     Comment[]
+  instituicoes Instituicao[]  @relation("UserInstituicoes")
 
   @@map("user")
 }
-
 model Post {
   id  Int @id @default(autoincrement())
   title String @unique
@@ -34,17 +32,16 @@ model Post {
   @@map("post")
 }
 
-model Instituicao {
-  id Int @id @default(autoincrement())
-  name String
-  latitude String
-  longitude String
 
-  user User[]
+model Instituicao {
+  id           Int     @id @default(autoincrement())
+  name         String
+  latitude     String
+  longitude    String
+  createdById  Int
+  createdBy    User    @relation("UserInstituicoes", fields: [createdById], references: [id])
 
   @@map("instituicao")
-
-
 }
 
 model Comment {

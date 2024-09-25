@@ -32,19 +32,35 @@ export class PostController {
 			res.status(500).json({ message: 'Erro ao criar postagem' });
 		}
 	}
-
 	async readAll(req: Request, res: Response) {
 		try {
-			const posts = await prismaService.post.findMany({
-				include: {
-					comments: true,
+		  const posts = await prismaService.post.findMany({
+			include: {
+			  author: {
+				select: {
+				  id: true,
+				  name: true,
+				  image: true,
 				},
-			});
-			res.status(200).json(posts);
+			  },
+			  comments: {
+				include: {
+				  author: {
+					select: {
+					  id: true,
+					  name: true,
+					  image: true,
+					},
+				  },
+				},
+			  },
+			},
+		  });
+		  res.status(200).json(posts);
 		} catch {
-			res.status(404).json({ message: 'Postagens não encontradas' });
+		  res.status(404).json({ message: 'Postagens não encontradas' });
 		}
-	}
+	  }
 
 	async readByUser(req: Request, res: Response) {
 		const userId = req.userID;

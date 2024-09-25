@@ -47,10 +47,7 @@ export class CommentController {
     const { postId } = req.params;
 
     if (!postId) {
-      return response(
-        res,
-        "O que faz nessa rota? Seu curioso! Volte para a página inicial e tente novamente!"
-      );
+      return res.status(400).json({ message: "Postagem não especificada" });
     }
 
     try {
@@ -58,11 +55,20 @@ export class CommentController {
         where: {
           postId: Number(postId),
         },
+        include: {
+          author: {
+            select: {
+              id: true,
+              name: true,
+              image: true,
+            },
+          },
+        },
       });
 
       res.status(200).json(comments);
     } catch {
-      response(res, "Comentários não encontrados", 404);
+      res.status(404).json({ message: "Comentários não encontrados" });
     }
   }
 
