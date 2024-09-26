@@ -1,9 +1,7 @@
-// app/home/profile/settings.tsx
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
-import api from '../../../utils/api';
-import withAuth from '../../../utils/withAuth';
+import api from '../../utils/api';
 
 const SettingsScreen = () => {
     const router = useRouter();
@@ -69,4 +67,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default withAuth(SettingsScreen);
+export default SettingsScreen;

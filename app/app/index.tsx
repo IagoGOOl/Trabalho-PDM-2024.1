@@ -1,4 +1,3 @@
-// app/index.tsx
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
@@ -10,12 +9,11 @@ export default function LoginScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    // Verificar se o usuário já está logado
     useEffect(() => {
         const checkAuth = async () => {
             const token = await AsyncStorage.getItem('userToken');
             if (token) {
-                router.replace('/home');
+                router.replace('/(tabs)/posts');
             }
         };
         checkAuth();
@@ -26,7 +24,7 @@ export default function LoginScreen() {
             const response = await api.post('/login', { email, password });
             const { token } = response.data;
             await AsyncStorage.setItem('userToken', token);
-            router.replace('/home');
+            router.replace('/(tabs)/posts');
         } catch (error) {
             console.error('Erro no login:', error);
             Alert.alert('Erro', 'Falha no login. Verifique suas credenciais.');
@@ -64,6 +62,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 16,
         paddingTop: 100,
+        borderColor: '#FFF'
     },
     title: {
         fontSize: 32,

@@ -1,7 +1,6 @@
-// app/write.tsx
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
-import api from '../../../utils/api';
+import api from '../../utils/api';
 import { useRouter } from 'expo-router';
 
 const WritePostScreen = () => {
@@ -13,7 +12,7 @@ const WritePostScreen = () => {
         try {
             await api.post('/post', { title, description });
             alert('Post criado com sucesso');
-            router.replace('/');
+            router.replace('/posts');
         } catch (error) {
             console.error(error);
             alert('Erro ao criar post');

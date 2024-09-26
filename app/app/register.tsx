@@ -1,8 +1,8 @@
-// app/register.tsx
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import api from '../utils/api';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function RegisterScreen() {
     const router = useRouter();
@@ -14,7 +14,10 @@ export default function RegisterScreen() {
         try {
             await api.post('/register', { name, email, password });
             Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
-            router.replace('/');
+            const response = await api.post('/login', { email, password });
+            const { token } = response.data;
+            await AsyncStorage.setItem('userToken', token);
+            router.replace('/(tabs)/posts');
         } catch (error) {
             console.error('Erro no cadastro:', error);
             Alert.alert('Erro', 'Falha no cadastro. Tente novamente.');

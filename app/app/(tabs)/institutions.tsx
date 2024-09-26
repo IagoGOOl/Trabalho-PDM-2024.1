@@ -1,10 +1,8 @@
-// app/home/institutions/index.tsx
 import React, { useEffect, useState } from 'react';
 import { View, Button, StyleSheet, Alert } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import { useRouter } from 'expo-router';
-import api from '../../../utils/api';
-import withAuth from '../../../utils/withAuth';
+import api from '../..//utils/api';
 
 const InstitutionsScreen = () => {
     const router = useRouter();
@@ -53,8 +51,8 @@ const InstitutionsScreen = () => {
             <MapView
                 style={styles.map}
                 initialRegion={{
-                    latitude: -23.5505, // Substitua pela latitude inicial desejada
-                    longitude: -46.6333, // Substitua pela longitude inicial desejada
+                    latitude: -23.5505,
+                    longitude: -46.6333,
                     latitudeDelta: 0.1,
                     longitudeDelta: 0.1,
                 }}
@@ -74,8 +72,8 @@ const InstitutionsScreen = () => {
                                 [
                                     {
                                         text: 'Editar',
-                                        onPress: () =>
-                                            router.push(`/home/institutions/edit/${institution.id}`),
+                                        // onPress: () =>
+                                            // router.push(`/home/institutions/edit/${institution.id}`),
                                     },
                                     {
                                         text: 'Excluir',
@@ -92,7 +90,7 @@ const InstitutionsScreen = () => {
             </MapView>
             <Button
                 title="Adicionar Instituição"
-                onPress={() => router.push('/home/institutions/add')}
+                // onPress={() => router.push('')}
             />
         </View>
     );
@@ -107,4 +105,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default withAuth(InstitutionsScreen);
+export default InstitutionsScreen;
