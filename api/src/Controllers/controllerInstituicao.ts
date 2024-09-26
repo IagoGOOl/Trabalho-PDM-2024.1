@@ -63,6 +63,34 @@ export class InstituicaoController {
     }
   }
 
+  async read(req: Request, res: Response) {
+    const { instituicaoId } = req.params;
+
+    try {
+        const instituicao = await prismaService.instituicao.findUnique({
+            where: {
+                id: Number(instituicaoId),
+            },
+            include: {
+                createdBy: {
+                    select: {
+                        id: true,
+                        name: true,
+                    },
+                },
+            },
+        });
+
+        if (!instituicao) {
+            return res.status(404).json({ message: "Instituição não encontrada" });
+        }
+
+        res.status(200).json(instituicao);
+    } catch (error) {
+        res.status(500).json({ message: "Erro ao buscar instituição" });
+    }
+}
+
   async update(req: Request, res: Response) {
     const { instituicaoId } = req.params;
     const { name, latitude, longitude } = req.body;

@@ -52,6 +52,7 @@ router
 	.get(AuthMiddleware, instituicaoController.readAll);
 router
 	.route('/instituicao/:instituicaoId')
+	.get(AuthMiddleware, instituicaoController.read)
 	.delete(AuthMiddleware, instituicaoController.delete)
 	.put(AuthMiddleware, instituicaoController.update);
 
