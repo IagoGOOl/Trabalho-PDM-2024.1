@@ -62,6 +62,44 @@ export class PostController {
 		}
 	  }
 
+	  async read(req: Request, res: Response) {
+		const { postId } = req.params;
+	
+		try {
+		  const post = await prismaService.post.findUnique({
+			where: { id: Number(postId) },
+			include: {
+			  author: {
+				select: {
+				  id: true,
+				  name: true,
+				  image: true,
+				},
+			  },
+			  comments: {
+				include: {
+				  author: {
+					select: {
+					  id: true,
+					  name: true,
+					  image: true,
+					},
+				  },
+				},
+			  },
+			},
+		  });
+	
+		  if (!post) {
+			return res.status(404).json({ message: 'Postagem não encontrada' });
+		  }
+	
+		  return res.status(200).json(post);
+		} catch (error) {
+		  return res.status(500).json({ message: 'Erro ao buscar postagem' });
+		}
+	  }
+
 	async readByUser(req: Request, res: Response) {
 		const userId = req.userID;
 

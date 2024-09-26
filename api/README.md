@@ -54,3 +54,5 @@ Para visualizar os dados armazenados no banco de dados SQLite, utilize o Prisma 
 npx prisma studio
 ```
 
+### Documentação da API
+[Link para o Documentação](doc.md)

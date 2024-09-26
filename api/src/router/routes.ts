@@ -40,6 +40,7 @@ router
 	.get(AuthMiddleware, postController.readAll);
 router
 	.route('/post/:postId')
+	.get(AuthMiddleware, postController.read)
 	.put(AuthMiddleware, postController.update)
 	.delete(AuthMiddleware, postController.delete);
 router.get('/post/user', AuthMiddleware, postController.readByUser)
