@@ -3,6 +3,12 @@ import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import api from '../utils/api';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+    BoxLink,
+    ButtonGreen, ButtonText,
+    Container, Input, LinkText, LinkWrapper, TextGray,
+    TitleAuth,
+} from '@/styled/StyledComponents';
 
 export default function RegisterScreen() {
     const router = useRouter();
@@ -25,52 +31,42 @@ export default function RegisterScreen() {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Cadastro</Text>
-            <TextInput
+        <Container>
+            <TitleAuth >Cadastro</TitleAuth>
+            <Input
                 placeholder="Nome"
                 value={name}
                 onChangeText={setName}
-                style={styles.input}
+
             />
-            <TextInput
+            <Input
                 placeholder="Email"
                 value={email}
                 onChangeText={setEmail}
-                style={styles.input}
+
                 autoCapitalize="none"
             />
-            <TextInput
+            <Input
                 placeholder="Senha"
                 value={password}
                 onChangeText={setPassword}
-                style={styles.input}
+
                 secureTextEntry
             />
-            <Button title="Cadastrar" onPress={handleRegister} />
-            <Button
-                title="Voltar ao Login"
-                onPress={() => router.replace('/')}
-            />
-        </View>
+            <ButtonGreen onPress={handleRegister} >
+                <ButtonText>Cadastrar</ButtonText>
+            </ButtonGreen>
+            <BoxLink>
+                <TextGray> Já é cadastrado ? realize seu  </TextGray>
+                <LinkWrapper   onPress={() => router.push('/')}>
+                    <LinkText>
+                        Login
+                    </LinkText>
+                </LinkWrapper>
+
+            </BoxLink>
+
+        </Container>
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-        paddingTop: 100,
-    },
-    title: {
-        fontSize: 32,
-        marginBottom: 24,
-        textAlign: 'center',
-    },
-    input: {
-        marginBottom: 12,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        padding: 8,
-    },
-});

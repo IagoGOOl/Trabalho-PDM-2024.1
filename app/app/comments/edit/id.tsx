@@ -1,4 +1,3 @@
-// app/home/comments/edit/id.tsx
 import React, { useState, useEffect } from 'react';
 import {View, TextInput, Button, StyleSheet, Alert, Text} from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';

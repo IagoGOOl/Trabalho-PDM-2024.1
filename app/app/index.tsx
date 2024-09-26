@@ -3,6 +3,12 @@ import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../utils/api';
+import {
+    BoxLink,
+    ButtonGreen, ButtonText,
+    Container, Input, LinkText, LinkWrapper, TextGray,
+    TitleAuth,
+} from '@/styled/StyledComponents';
 
 export default function LoginScreen() {
     const router = useRouter();
@@ -32,47 +38,38 @@ export default function LoginScreen() {
     };
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.title}>Login</Text>
-            <TextInput
+        <Container>
+            <TitleAuth>Entrar</TitleAuth>
+            <Input
                 placeholder="Email"
                 value={email}
                 onChangeText={setEmail}
-                style={styles.input}
+
                 autoCapitalize="none"
             />
-            <TextInput
+            <Input
                 placeholder="Senha"
                 value={password}
                 onChangeText={setPassword}
-                style={styles.input}
+
                 secureTextEntry
             />
-            <Button title="Entrar" onPress={handleLogin} />
-            <Button
-                title="Cadastrar-se"
-                onPress={() => router.push('/register')}
-            />
-        </View>
+            <ButtonGreen  onPress={handleLogin} >
+                <ButtonText>Entrar</ButtonText>
+            </ButtonGreen>
+
+            <BoxLink>
+                <TextGray>Não tem uma conta? </TextGray>
+                <LinkWrapper   onPress={() => router.push('/register')}>
+                    <LinkText>
+                        Cadastre-se
+                    </LinkText>
+                </LinkWrapper>
+
+            </BoxLink>
+
+
+
+        </Container>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-        paddingTop: 100,
-        borderColor: '#FFF'
-    },
-    title: {
-        fontSize: 32,
-        marginBottom: 24,
-        textAlign: 'center',
-    },
-    input: {
-        marginBottom: 12,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        padding: 8,
-    },
-});

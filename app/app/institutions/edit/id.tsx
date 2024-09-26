@@ -1,17 +1,16 @@
-// app/institutions/edit/[id].tsx
 
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, Button, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import MapView, { Marker, MapPressEvent, LatLng, Region } from 'react-native-maps'; // Importar LatLng e Region
+import MapView, { Marker, MapPressEvent, LatLng, Region } from 'react-native-maps';
 import api from '../../../utils/api';
 
 const EditInstitutionScreen = () => {
     const router = useRouter();
     const { id } = useLocalSearchParams();
     const [name, setName] = useState('');
-    const [coordinate, setCoordinate] = useState<LatLng | null>(null); // Definir o tipo de coordinate
-    const [region, setRegion] = useState<Region | null>(null); // Definir o tipo de region
+    const [coordinate, setCoordinate] = useState<LatLng | null>(null);
+    const [region, setRegion] = useState<Region | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
