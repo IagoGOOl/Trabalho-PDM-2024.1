@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import {View, Text, FlatList, TouchableOpacity, StyleSheet, Image} from 'react-native';
+import {View, Text, FlatList, TouchableOpacity, StyleSheet, Image, StatusBar} from 'react-native';
 import { useRouter } from 'expo-router';
 import api from '../../utils/api';
+import {
+    AuthorImage,
+    AuthorName,
+    CardPost,
+    ContainerGreen,
+    InfoPost, TextContend,
+    TitleLight,
+    TitlePost
+} from "@/components/styled/StyledComponents";
 
 const PostsScreen = () => {
   const router = useRouter();
@@ -20,17 +29,17 @@ const PostsScreen = () => {
   }, []);
 
   const renderItem = ({ item }: any) => (
-      <TouchableOpacity
+      <CardPost
           onPress={() => router.push({
             pathname: `/post/id`,
             params:{
               postId: item.id,
             }
           })}
-          style={styles.postItem}
-      >
-        <View >
-          <Image
+             >
+        <InfoPost >
+
+          <AuthorImage
               source={
                 item.author.image
                     ? { uri: item.author.image }
@@ -38,42 +47,27 @@ const PostsScreen = () => {
               }
 
           />
-          <Text >{item.author.name}</Text>
-        </View>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text numberOfLines={2} style={styles.description}>{item.description}</Text>
-      </TouchableOpacity>
+          <AuthorName >{item.author.name}</AuthorName>
+
+        </InfoPost>
+
+          <TitlePost>{item.title}</TitlePost>
+          <TextContend numberOfLines={2} >{item.description}</TextContend>
+
+      </CardPost>
   );
 
   return (
-      <View style={styles.container}>
+      <ContainerGreen>
+          <TitleLight> Posts</TitleLight>
         <FlatList
             data={posts}
             keyExtractor={(item) => item}
             renderItem={renderItem}
         />
-      </View>
+      </ContainerGreen>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-  },
-  postItem: {
-    marginBottom: 12,
-    padding: 12,
-    borderWidth: 1,
-    borderColor: '#ccc',
-  },
-  title: {
-    fontSize: 18,
-    marginBottom: 4,
-  },
-  description: {
-    color: '#666',
-  },
-});
 
 export default PostsScreen;

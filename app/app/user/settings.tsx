@@ -20,12 +20,12 @@ const SettingsScreen = () => {
     const router = useRouter();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState(''); // Senha atual
+    const [currentPassword, setCurrentPassword] = useState(''); // Senha atual
     const [newPassword, setNewPassword] = useState(''); // Nova senha
     const [imageUri, setImageUri] = useState<string | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
+    const [saving, setSaving] = useState<boolean>(false);
     const [uploading, setUploading] = useState<boolean>(false);
-    const [updatingPassword, setUpdatingPassword] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -50,8 +50,36 @@ const SettingsScreen = () => {
             return;
         }
 
+        setSaving(true);
+
         try {
-            await api.patch('/user/me', { name, email });
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('email', email);
+
+            // Inclui a nova senha se fornecida
+            if (newPassword) {
+                formData.append('password', newPassword);
+            }
+
+            // Inclui a imagem se selecionada
+            if (imageUri) {
+                const filename = imageUri.split('/').pop() || 'profile.jpg';
+                const match = /\.(\w+)$/.exec(filename);
+                const type = match ? `image/${match[1]}` : `image`;
+                formData.append('image', {
+                    uri: imageUri,
+                    type,
+                    name: filename,
+                } as any);
+            }
+
+            const response = await api.patch('/user/me', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
             Alert.alert('Sucesso', 'Dados atualizados com sucesso!');
             router.back();
         } catch (error: any) {
@@ -60,35 +88,8 @@ const SettingsScreen = () => {
                 error.response?.data?.message ||
                 'Não foi possível atualizar seus dados.';
             Alert.alert('Erro', message);
-        }
-    };
-
-    const handlePasswordUpdate = async () => {
-        if (!password || !newPassword) {
-            Alert.alert('Erro', 'Por favor, preencha todos os campos de senha.');
-            return;
-        }
-
-        if (newPassword.length < 6) {
-            Alert.alert('Erro', 'A nova senha deve ter pelo menos 6 caracteres.');
-            return;
-        }
-
-        setUpdatingPassword(true);
-
-        try {
-            await api.patch('/user/me/update-password', { password, newPassword });
-            Alert.alert('Sucesso', 'Senha atualizada com sucesso!');
-            setPassword('');
-            setNewPassword('');
-        } catch (error: any) {
-            console.error('Erro ao atualizar senha:', error);
-            const message =
-                error.response?.data?.message ||
-                'Não foi possível atualizar a senha.';
-            Alert.alert('Erro', message);
         } finally {
-            setUpdatingPassword(false);
+            setSaving(false);
         }
     };
 
@@ -114,41 +115,6 @@ const SettingsScreen = () => {
         if (!result.canceled && result.assets.length > 0) {
             const uri = result.assets[0].uri;
             setImageUri(uri);
-            handleUploadImage(uri);
-        }
-    };
-
-    const handleUploadImage = async (uri: string) => {
-        setUploading(true);
-
-        try {
-            const formData = new FormData();
-            const filename = uri.split('/').pop() || 'profile.jpg';
-            const match = /\.(\w+)$/.exec(filename);
-            const type = match ? `image/${match[1]}` : `image`;
-
-            formData.append('image', {
-                uri,
-                type,
-                name: filename,
-            } as any);
-
-            const response = await api.patch('/user/me/upload', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
-            });
-
-            Alert.alert('Sucesso', 'Imagem atualizada com sucesso!');
-            setImageUri(response.data.user.image);
-        } catch (error: any) {
-            console.error('Erro ao atualizar imagem:', error);
-            const message =
-                error.response?.data?.message ||
-                'Não foi possível atualizar a imagem.';
-            Alert.alert('Erro', message);
-        } finally {
-            setUploading(false);
         }
     };
 
@@ -167,7 +133,7 @@ const SettingsScreen = () => {
                     source={
                         imageUri
                             ? { uri: imageUri }
-                            : require('../../assets/icons/user.png')
+                            : require('../../assets/icons/user.png') // Certifique-se de que o caminho está correto
                     }
                     style={styles.avatar}
                 />
@@ -190,13 +156,6 @@ const SettingsScreen = () => {
                 keyboardType="email-address"
             />
             <TextInput
-                placeholder="Senha Atual"
-                value={password}
-                onChangeText={setPassword}
-                style={styles.input}
-                secureTextEntry
-            />
-            <TextInput
                 placeholder="Nova Senha"
                 value={newPassword}
                 onChangeText={setNewPassword}
@@ -207,11 +166,7 @@ const SettingsScreen = () => {
 
             <View style={styles.separator} />
 
-            {updatingPassword ? (
-                <ActivityIndicator size="small" color="#0000ff" />
-            ) : (
-                <Button title="Atualizar Senha" onPress={handlePasswordUpdate} />
-            )}
+            {/* Removido o botão separado para atualização de senha */}
         </ScrollView>
     );
 };

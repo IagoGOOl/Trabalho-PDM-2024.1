@@ -48,8 +48,9 @@ function RootLayoutNav() {
   return (
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="register" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="post/edit/id" />
+        <Stack.Screen name="post/edit/id" options={{ headerShown: false }}/>
       </Stack>
   );
 }

@@ -1,4 +1,3 @@
-// @ts-ignore
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Button, FlatList, StyleSheet, Alert, Image } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
@@ -82,7 +81,6 @@ const PostDetailsScreen = () => {
                 <Text style={styles.commentAuthor}>{item.author.name}</Text>
             </View>
             <Text>{item.description}</Text>
-            {/* Verificar se o usuário atual é o autor do comentário */}
             {currentUserId === item.author.id && (
                 <View style={styles.commentActions}>
                     <Button
