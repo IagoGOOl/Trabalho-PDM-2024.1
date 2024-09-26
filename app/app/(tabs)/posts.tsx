@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import {View, Text, FlatList, TouchableOpacity, StyleSheet, Image} from 'react-native';
 import { useRouter } from 'expo-router';
 import api from '../../utils/api';
 
@@ -13,7 +13,7 @@ const PostsScreen = () => {
         const response = await api.get('/post');
         setPosts(response.data);
       } catch (error) {
-        console.error('Erro ao buscar posts:', error);
+        console.error('Erro ao buscar post:', error);
       }
     };
     fetchPosts();
@@ -21,9 +21,25 @@ const PostsScreen = () => {
 
   const renderItem = ({ item }: any) => (
       <TouchableOpacity
-          // onPress={() => router.push(`/home/posts/${item.id}`)}
+          onPress={() => router.push({
+            pathname: `/post/id`,
+            params:{
+              postId: item.id,
+            }
+          })}
           style={styles.postItem}
       >
+        <View >
+          <Image
+              source={
+                item.author.image
+                    ? { uri: item.author.image }
+                    : require('../../assets/icons/user.png')
+              }
+
+          />
+          <Text >{item.author.name}</Text>
+        </View>
         <Text style={styles.title}>{item.title}</Text>
         <Text numberOfLines={2} style={styles.description}>{item.description}</Text>
       </TouchableOpacity>

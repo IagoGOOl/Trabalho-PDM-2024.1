@@ -1,12 +1,17 @@
+// app/institutions/index.tsx
+
 import React, { useEffect, useState } from 'react';
-import { View, Button, StyleSheet, Alert } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import { View, Button, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import MapView, { Marker, Region } from 'react-native-maps'; // Importar Region
 import { useRouter } from 'expo-router';
-import api from '../..//utils/api';
+import api from '../../utils/api';
+import * as Location from 'expo-location';
 
 const InstitutionsScreen = () => {
     const router = useRouter();
-    const [institutions, setInstitutions] = useState([]);
+    const [institutions, setInstitutions] = useState<any[]>([]);
+    const [region, setRegion] = useState<Region | null>(null); // Definir o tipo de region
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchInstitutions = async () => {
@@ -17,7 +22,37 @@ const InstitutionsScreen = () => {
                 console.error('Erro ao buscar instituições:', error);
             }
         };
+
+        const getUserLocation = async () => {
+            try {
+                const { status } = await Location.requestForegroundPermissionsAsync();
+                if (status !== 'granted') {
+                    Alert.alert('Permissão negada', 'Permissão de acesso à localização negada.');
+                    // Definir uma região padrão caso a permissão seja negada
+                    setRegion({
+                        latitude: -23.5505,
+                        longitude: -46.6333,
+                        latitudeDelta: 0.05,
+                        longitudeDelta: 0.05,
+                    });
+                } else {
+                    const location = await Location.getCurrentPositionAsync({});
+                    setRegion({
+                        latitude: location.coords.latitude,
+                        longitude: location.coords.longitude,
+                        latitudeDelta: 0.05,
+                        longitudeDelta: 0.05,
+                    });
+                }
+            } catch (error) {
+                console.error('Erro ao obter localização do usuário:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
         fetchInstitutions();
+        getUserLocation();
     }, []);
 
     const handleDeleteInstitution = async (id: number) => {
@@ -46,16 +81,19 @@ const InstitutionsScreen = () => {
         );
     };
 
+    if (loading || !region) {
+        return (
+            <View style={styles.loader}>
+                <ActivityIndicator size="large" color="#0000ff" />
+            </View>
+        );
+    }
+
     return (
         <View style={styles.container}>
             <MapView
                 style={styles.map}
-                initialRegion={{
-                    latitude: -23.5505,
-                    longitude: -46.6333,
-                    latitudeDelta: 0.1,
-                    longitudeDelta: 0.1,
-                }}
+                initialRegion={region}
             >
                 {institutions.map((institution: any) => (
                     <Marker
@@ -72,8 +110,11 @@ const InstitutionsScreen = () => {
                                 [
                                     {
                                         text: 'Editar',
-                                        // onPress: () =>
-                                            // router.push(`/home/institutions/edit/${institution.id}`),
+                                        onPress: () =>
+                                            router.push({
+                                                pathname: '/institutions/edit/id',
+                                                params: { id: institution.id },
+                                            }),
                                     },
                                     {
                                         text: 'Excluir',
@@ -90,7 +131,7 @@ const InstitutionsScreen = () => {
             </MapView>
             <Button
                 title="Adicionar Instituição"
-                // onPress={() => router.push('')}
+                onPress={() => router.push('/institutions/add')}
             />
         </View>
     );
@@ -102,6 +143,11 @@ const styles = StyleSheet.create({
     },
     map: {
         flex: 1,
+    },
+    loader: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 
