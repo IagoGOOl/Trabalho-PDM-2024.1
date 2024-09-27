@@ -1,8 +1,24 @@
-// @ts-ignore
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, FlatList, StyleSheet, Alert, Image } from 'react-native';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import React, {useEffect, useState} from 'react';
+import {Alert, FlatList, Image} from 'react-native';
+import {useLocalSearchParams, useRouter} from 'expo-router';
 import api from '../../utils/api';
+import {
+    AuthorImageComment,
+    BoxComments,
+    BoxContendComments,
+    BoxEdtDelete,
+    ButtonEdit,
+    ButtonGreen,
+    ButtonText,
+    ButtonTrash,
+    Container,
+    InfoPost,
+    Input,
+    TextContendComment,
+    TextContendDetails,
+    TextGreen,
+    TitleGreenLight
+} from "@/components/styled/StyledComponents";
 
 const PostDetailsScreen = () => {
     const router = useRouter();
@@ -34,7 +50,6 @@ const PostDetailsScreen = () => {
         try {
             await api.post(`/post/${postId}/comment`, { description: newComment });
             setNewComment('');
-            // Atualizar a lista de comentários
             const commentsResponse = await api.get(`/post/${postId}/comment`);
             setComments(commentsResponse.data);
         } catch (error) {
@@ -55,9 +70,9 @@ const PostDetailsScreen = () => {
                         try {
                             await api.delete(`/post/${postId}/comment/${commentId}`);
                             Alert.alert('Sucesso', 'Comentário excluído com sucesso!');
-                            // Atualizar a lista de comentários
                             const commentsResponse = await api.get(`/post/${postId}/comment`);
                             setComments(commentsResponse.data);
+                            router.push('/posts')
                         } catch (error) {
                             console.error('Erro ao excluir comentário:', error);
                         }
@@ -69,121 +84,72 @@ const PostDetailsScreen = () => {
     };
 
     const renderComment = ({ item }: any) => (
-        <View style={styles.commentItem}>
-            <View style={styles.commentHeader}>
-                <Image
+        <BoxComments >
+            <InfoPost >
+                <AuthorImageComment
                     source={
                         item.author.image
                             ? { uri: item.author.image }
                             : require('../../assets/icons/user.png')
                     }
-                    style={styles.avatar}
                 />
-                <Text style={styles.commentAuthor}>{item.author.name}</Text>
-            </View>
-            <Text>{item.description}</Text>
-            {/* Verificar se o usuário atual é o autor do comentário */}
+
+
+                <TextContendComment >{item.author.name}</TextContendComment>
+            </InfoPost>
+            <BoxContendComments>
+
+            <TextContendComment>{item.description}</TextContendComment>
             {currentUserId === item.author.id && (
-                <View style={styles.commentActions}>
-                    <Button
-                        title="Editar"
-                        onPress={() => router.push({
-                            pathname: '/comments/edit/id',
-                            params: { commentId: item.id , postId: postId }
-                        })}
-                    />
-                    <Button
-                        title="Excluir"
-                        onPress={() => handleDeleteComment(item.id)}
-                    />
-                </View>
+                <BoxEdtDelete>
+
+                    <ButtonEdit  onPress={() => router.push({
+                        pathname: '/comments/edit/id',
+                        params: { commentId: item.id , postId: postId }
+                    })}>
+                        <Image source={require('../../assets/icons/edit.png')}/>
+                    </ButtonEdit>
+
+                    <ButtonTrash  onPress={() => handleDeleteComment(item.id)}>
+                        <Image source={require('../../assets/icons/trash.png')}/>
+                    </ButtonTrash>
+
+
+
+                </BoxEdtDelete>
             )}
-        </View>
+        </BoxContendComments>
+
+</BoxComments>
     );
     if (!post) {
         return null;
     }
 
     return (
-        <View style={styles.container}>
-            <View style={styles.commentHeader}>
-                <Image
-                    source={
-                        post.author.image
-                            ? { uri: post.author.image }
-                            : require('../../assets/icons/user.png')
-                    }
-                    style={styles.avatar}
-                />
-                <Text style={styles.commentAuthor}>{post.author.name}</Text>
-            </View>
-            <Text style={styles.title}>{post.title}</Text>
-            <Text style={styles.description}>{post.description}</Text>
-            <Text style={styles.commentsHeader}>Comentários</Text>
+        <Container>
+
+            <TitleGreenLight>{post.title}</TitleGreenLight>
+            <TextContendDetails >{post.description}</TextContendDetails>
+            <TextGreen>Comentários</TextGreen>
             <FlatList
                 data={comments}
                 keyExtractor={(item) => item}
                 renderItem={renderComment}
             />
-            <TextInput
-                placeholder="Adicionar comentário"
+            <TextGreen>Comente o post</TextGreen>
+            <Input
+                placeholder="Comente Aqui"
                 value={newComment}
                 onChangeText={setNewComment}
-                style={styles.input}
             />
-            <Button title="Comentar" onPress={handleAddComment} />
-        </View>
+            <ButtonGreen  onPress={handleAddComment} >
+            <ButtonText>
+                Comentar
+            </ButtonText></ButtonGreen>
+        </Container>
     );
 };
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 16,
-    },
-    title: {
-        fontSize: 24,
-        marginBottom: 8,
-    },
-    description: {
-        marginBottom: 16,
-    },
-    commentsHeader: {
-        fontSize: 20,
-        marginBottom: 8,
-    },
-    commentItem: {
-        marginBottom: 12,
-        padding: 8,
-        borderWidth: 1,
-        borderColor: '#ccc',
-    },
-    commentHeader: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 4,
-    },
-    avatar: {
-        width: 32,
-        height: 32,
-        borderRadius: 16,
-        marginRight: 8,
-    },
-    commentAuthor: {
-        fontWeight: 'bold',
-    },
-    commentActions: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginTop: 8,
-    },
-    input: {
-        marginTop: 16,
-        marginBottom: 8,
-        borderWidth: 1,
-        borderColor: '#ccc',
-        padding: 8,
-    },
-});
 
 
 export default PostDetailsScreen;

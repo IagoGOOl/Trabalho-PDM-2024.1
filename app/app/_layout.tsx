@@ -48,8 +48,14 @@ function RootLayoutNav() {
   return (
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="register" options={{ headerShown: false }} />
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="post/edit/id" />
+        <Stack.Screen name="post/edit/id" options={{ headerShown: false }}/>
+        <Stack.Screen name="post/id" options={{ headerShown: false }}/>
+        <Stack.Screen name="user/settings" options={{ headerShown: false }}/>
+        <Stack.Screen name="institutions/add" options={{ headerShown: false }}/>
+        <Stack.Screen name="institutions/edit/id" options={{ headerShown: false }}/>
+        <Stack.Screen name="comments/edit/id" options={{ headerShown: false }}/>
       </Stack>
   );
 }

@@ -8,7 +8,7 @@ import {
     ButtonGreen, ButtonText,
     Container, Input, LinkText, LinkWrapper, TextGray,
     TitleAuth,
-} from '@/styled/StyledComponents';
+} from '@/components/styled/StyledComponents';
 
 export default function RegisterScreen() {
     const router = useRouter();

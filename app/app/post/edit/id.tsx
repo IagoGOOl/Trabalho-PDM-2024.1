@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import { useRouter, useLocalSearchParams } from 'expo-router';
+import React, {useEffect, useState} from 'react';
+import {Alert, StyleSheet} from 'react-native';
+import {useLocalSearchParams, useRouter} from 'expo-router';
 import api from '../../../utils/api';
+import {ButtonGreen, ButtonText, Container, Input, TitleGreen} from "@/components/styled/StyledComponents";
 
 const EditPostScreen = () => {
     const router = useRouter();
@@ -27,7 +28,7 @@ const EditPostScreen = () => {
         try {
             await api.put(`/post/${postId}`, { title, description });
             Alert.alert('Sucesso', 'Post atualizado com sucesso!');
-            router.back();
+            router.push('/(tabs)/profile');
         } catch (error) {
             console.error('Erro ao atualizar post:', error);
             Alert.alert('Erro', 'Não foi possível atualizar o post.');
@@ -35,22 +36,24 @@ const EditPostScreen = () => {
     };
 
     return (
-        <View style={styles.container}>
-            <TextInput
+        <Container>
+            <TitleGreen>Editar Post</TitleGreen>
+            <Input
                 placeholder="Título"
                 value={title}
                 onChangeText={setTitle}
-                style={styles.input}
             />
-            <TextInput
+            <Input
                 placeholder="Descrição"
                 value={description}
                 onChangeText={setDescription}
-                style={[styles.input, styles.description]}
                 multiline
             />
-            <Button title="Salvar" onPress={handleSave} />
-        </View>
+            <ButtonGreen onPress={handleSave} >
+                <ButtonText>Salvar</ButtonText>
+            </ButtonGreen>
+
+        </Container>
     );
 };
 

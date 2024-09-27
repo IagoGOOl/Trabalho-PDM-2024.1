@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
 import api from '../../utils/api';
 import { useRouter } from 'expo-router';
+import {ButtonGreen, ButtonText, Container, Input, TextGreen, TitleGreen} from "@/components/styled/StyledComponents";
 
 const WritePostScreen = () => {
     const router = useRouter();
@@ -12,7 +12,7 @@ const WritePostScreen = () => {
         try {
             await api.post('/post', { title, description });
             alert('Post criado com sucesso');
-            router.replace('/posts');
+            router.push('/posts');
         } catch (error) {
             console.error(error);
             alert('Erro ao criar post');
@@ -20,27 +20,30 @@ const WritePostScreen = () => {
     };
 
     return (
-        <View >
-            <TextInput
+        <Container >
+            <TitleGreen>Novo Post</TitleGreen>
+            <TextGreen>Inserir conteúdo do post</TextGreen>
+            <Input
                 placeholder="Título"
                 value={title}
                 onChangeText={setTitle}
 
             />
-            <TextInput
+            <Input
                 placeholder="Descrição"
                 value={description}
                 onChangeText={setDescription}
-
                 multiline
             />
-            <Button title="Publicar" onPress={handlePost} />
-        </View>
+            <ButtonGreen  onPress={handlePost} >
+                <ButtonText>Adicionar Post</ButtonText>
+            </ButtonGreen>
+
+
+        </Container>
     );
 };
 
-const styles = StyleSheet.create({
-    // Your styles here
-});
+
 
 export default WritePostScreen;

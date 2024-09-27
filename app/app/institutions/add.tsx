@@ -1,9 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, StyleSheet, Alert, ActivityIndicator } from 'react-native';
-import { useRouter } from 'expo-router';
-import MapView, { Marker, MapPressEvent, LatLng, Region } from 'react-native-maps';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
+import {useRouter} from 'expo-router';
+import MapView, {LatLng, MapPressEvent, Marker, Region} from 'react-native-maps';
 import * as Location from 'expo-location';
 import api from '../../utils/api';
+import {
+    ButtonGreen,
+    ButtonText,
+    ContainerMap,
+    Input,
+    TextGreen,
+    TitleGreen
+} from "@/components/styled/StyledComponents";
 
 const AddInstitutionScreen = () => {
     const router = useRouter();
@@ -80,7 +88,8 @@ const AddInstitutionScreen = () => {
     }
 
     return (
-        <View style={styles.container}>
+        <ContainerMap>
+            <TitleGreen>Nova Instituição</TitleGreen>
             <MapView
                 style={styles.map}
                 region={region}
@@ -93,16 +102,20 @@ const AddInstitutionScreen = () => {
                     />
                 )}
             </MapView>
-            <View style={styles.form}>
-                <TextInput
+            <View >
+                <TextGreen>
+                    Toque no mapa para adicionar o local da Instituição
+                </TextGreen>
+                <Input
                     placeholder="Nome da Instituição"
                     value={name}
                     onChangeText={setName}
-                    style={styles.input}
                 />
-                <Button title="Adicionar" onPress={handleAdd} />
+                <ButtonGreen  onPress={handleAdd} >
+                    <ButtonText>Adicionar Instituição</ButtonText>
+                </ButtonGreen>
             </View>
-        </View>
+        </ContainerMap>
     );
 };
 
@@ -111,7 +124,9 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     map: {
-        flex: 1,
+        height: '60%',
+        width: '100%',
+        marginTop:5,
     },
     form: {
         padding: 16,
