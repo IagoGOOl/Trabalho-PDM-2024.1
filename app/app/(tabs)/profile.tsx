@@ -1,8 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, FlatList, Alert, Image } from 'react-native';
+import React, {useState} from 'react';
+import {Alert, Button, FlatList, Image, StyleSheet, Text, View} from 'react-native';
 import {useFocusEffect, useRouter} from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../utils/api';
+import {
+    BoxComments,
+    BoxEdtDeleteProfile,
+    ButtonEdit,
+    ButtonTrash,
+    ContainerProfile,
+    TextGreen,
+    TextRed,
+    TitleGreenProfile,
+    TitlePostProfile
+} from "@/components/styled/StyledComponents";
 
 interface Post {
   id: number;
@@ -74,6 +85,7 @@ const ProfileScreen = () => {
               try {
                 await api.delete(`/post/${postId}`);
                 Alert.alert('Sucesso', 'Post excluído com sucesso!');
+                router.push('/posts')
 
 
               } catch (error) {
@@ -87,24 +99,26 @@ const ProfileScreen = () => {
   };
 
   const renderItem = ({ item }: { item: Post }) => (
-      <View style={styles.postItem}>
-        <Text>{item.title}</Text>
-        <View style={styles.postActions}>
-          <Button
-              title="Editar"
-              onPress={() =>
-                  router.replace({
-                    pathname: '/post/edit/id',
-                    params: { postId: item.id.toString() },
-                  })
-              }
-          />
-          <Button
-              title="Excluir"
-              onPress={() => handleDeletePost(item.id)}
-          />
-        </View>
-      </View>
+      <BoxComments>
+                  <TitlePostProfile>{item.title}</TitlePostProfile>
+
+
+        <BoxEdtDeleteProfile>
+
+            <ButtonEdit  onPress={() => router.push({
+                pathname: '/post/edit/id',
+                params: { postId: item.id.toString() },
+            })}>
+                <Image source={require('../../assets/icons/edit.png')}/>
+                <TextGreen>Editar</TextGreen>
+            </ButtonEdit>
+
+            <ButtonTrash    onPress={() => handleDeletePost(item.id)}>
+                <Image source={require('../../assets/icons/trash.png')}/>
+                <TextRed> Excluir</TextRed>
+            </ButtonTrash>
+        </BoxEdtDeleteProfile>
+      </BoxComments>
   );
 
   if (!user) {
@@ -112,7 +126,7 @@ const ProfileScreen = () => {
   }
 
     return (
-        <View style={styles.container}>
+        <ContainerProfile>
             <View style={styles.profileHeader}>
                 <Image
                     source={
@@ -132,13 +146,13 @@ const ProfileScreen = () => {
                 onPress={() => router.push('/user/settings')}
             />
             <Button title="Logout" onPress={handleLogout} />
-            <Text style={styles.postsHeader}>Seus Posts</Text>
+            <TitleGreenProfile>Posts</TitleGreenProfile>
             <FlatList
                 data={posts}
                 keyExtractor={(item) => item.id.toString()}
                 renderItem={renderItem}
             />
-        </View>
+        </ContainerProfile>
     );
 };
 

@@ -202,18 +202,25 @@ export const ButtonEdit = styled.TouchableOpacity`
     align-items: center; 
     border-radius: 5px;
     border: solid 2px #56A142;
+    flex-direction: row;
+    gap: 5px;
 `;
 
 export const ButtonTrash = styled.TouchableOpacity`
   padding: 8px;
     align-items: center; 
+    color: #FF7256;
     border-radius: 5px;
     border: solid 2px #FF7256;
+    flex-direction: row;
+    gap: 5px;
+
 `;
 
 // Commment and Post
 export const BoxComments = styled.View`
     border: solid 2px #56A142;
+    color: #56A142;
     border-radius: 20px;
     padding: 10px;
     margin: 5px 0;
@@ -227,11 +234,33 @@ export const BoxContendComments = styled.View`
 
 
 
+export const TextRed= styled.Text`
+    font-size: 16px;
+    font-weight: 600;
+    color: #FF7256;
+    padding-top: 10px;
+`;
 
 
 
 export const BoxEdtDelete = styled.View`
     gap: 10px;
+`;
+
+export const BoxEdtDeleteProfile = styled.View`
+    gap: 10px;
+    flex-direction: row;
+    justify-content: space-around;
+`;
+
+export const TitlePostProfile = styled.Text`
+    font-size: 20px;
+    font-weight: 700;
+    color: #264929;
+    text-align: center;
+    padding: 5px 0;
+    text-transform: capitalize;
+    
 `;
 
 export const AuthorImageComment = styled.Image`
@@ -251,3 +280,42 @@ export const TextContendComment = styled.Text`
    
 `;
 
+
+// perfil
+export const ContainerProfile = styled.View`
+    flex: 1;
+    background-color: white;
+    padding: 100px 16px 16px;
+`;
+
+export const TitleGreenProfile = styled.Text`
+    font-size: 20px;
+    font-weight: bold;
+    color: #56A142;
+    text-align: center;
+    padding: 5px 0;
+`;
+
+
+
+export const ButtonSettings = styled.TouchableOpacity`
+  padding: 8px;
+    align-items: center; 
+    border-radius: 5px;
+    border: solid 2px #56A142;
+    flex-direction: row;
+    gap: 5px;
+`;
+
+export const ButtonLogout = styled.TouchableOpacity`
+  padding: 8px;
+    align-items: center; 
+    color: #FF7256;
+    border-radius: 5px;
+    border: solid 2px #FF7256;
+    flex-direction: row;
+    gap: 5px;
+
+`;
+
+8
