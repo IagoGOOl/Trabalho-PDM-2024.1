@@ -1,16 +1,17 @@
 // app/institutions/index.tsx
 
-import React, { useEffect, useState } from 'react';
-import { View, Button, StyleSheet, Alert, ActivityIndicator } from 'react-native';
-import MapView, { Marker, Region } from 'react-native-maps'; // Importar Region
-import { useRouter } from 'expo-router';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
+import MapView, {Marker, Region} from 'react-native-maps';
+import {useRouter} from 'expo-router';
 import api from '../../utils/api';
 import * as Location from 'expo-location';
+import {ButtonGreen, ButtonText, ContainerMap, TitleGreen} from "@/components/styled/StyledComponents";
 
 const InstitutionsScreen = () => {
     const router = useRouter();
     const [institutions, setInstitutions] = useState<any[]>([]);
-    const [region, setRegion] = useState<Region | null>(null); // Definir o tipo de region
+    const [region, setRegion] = useState<Region | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -28,7 +29,6 @@ const InstitutionsScreen = () => {
                 const { status } = await Location.requestForegroundPermissionsAsync();
                 if (status !== 'granted') {
                     Alert.alert('Permissão negada', 'Permissão de acesso à localização negada.');
-                    // Definir uma região padrão caso a permissão seja negada
                     setRegion({
                         latitude: -23.5505,
                         longitude: -46.6333,
@@ -90,7 +90,8 @@ const InstitutionsScreen = () => {
     }
 
     return (
-        <View style={styles.container}>
+        <ContainerMap>
+            <TitleGreen>Instituições</TitleGreen>
             <MapView
                 style={styles.map}
                 initialRegion={region}
@@ -129,20 +130,26 @@ const InstitutionsScreen = () => {
                     />
                 ))}
             </MapView>
-            <Button
-                title="Adicionar Instituição"
+            <ButtonGreen
                 onPress={() => router.push('/institutions/add')}
-            />
-        </View>
+            >
+                <ButtonText>
+                    Adicionar Instituição
+                </ButtonText>
+            </ButtonGreen>
+        </ContainerMap>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
+
     map: {
-        flex: 1,
+
+        height: '75%',
+        width: '100%',
+        marginTop:5,
+
+
     },
     loader: {
         flex: 1,

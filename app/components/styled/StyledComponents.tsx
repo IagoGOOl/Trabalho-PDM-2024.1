@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { TouchableOpacity } from 'react-native';
+import {TouchableOpacity} from 'react-native';
 
 
 interface IconContainerProps {
@@ -10,6 +10,12 @@ export const Container = styled.View`
     flex: 1;
     background-color: white;
     padding: 100px 16px 16px;
+`;
+
+export const ContainerMap = styled.View`
+    flex: 1;
+    background-color: white;
+    padding: 30px 16px 16px;
 `;
 
 export const ContainerGreen = styled.View`

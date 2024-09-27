@@ -1,9 +1,16 @@
-
-import React, { useState, useEffect } from 'react';
-import { View, TextInput, Button, StyleSheet, Alert, ActivityIndicator } from 'react-native';
-import { useRouter, useLocalSearchParams } from 'expo-router';
-import MapView, { Marker, MapPressEvent, LatLng, Region } from 'react-native-maps';
+import React, {useEffect, useState} from 'react';
+import {ActivityIndicator, Alert, StyleSheet, View} from 'react-native';
+import {useLocalSearchParams, useRouter} from 'expo-router';
+import MapView, {LatLng, MapPressEvent, Marker, Region} from 'react-native-maps';
 import api from '../../../utils/api';
+import {
+    ButtonGreen,
+    ButtonText,
+    ContainerMap,
+    Input,
+    TextGreen,
+    TitleGreen
+} from "@/components/styled/StyledComponents";
 
 const EditInstitutionScreen = () => {
     const router = useRouter();
@@ -75,7 +82,8 @@ const EditInstitutionScreen = () => {
     }
 
     return (
-        <View style={styles.container}>
+        <ContainerMap>
+            <TitleGreen>Editar Instituição</TitleGreen>
             <MapView
                 style={styles.map}
                 region={region}
@@ -90,16 +98,19 @@ const EditInstitutionScreen = () => {
                     />
                 )}
             </MapView>
-            <View style={styles.form}>
-                <TextInput
+            <View>
+                <TextGreen>Inserir Nome da Instituição</TextGreen>
+                <Input
                     placeholder="Nome da Instituição"
                     value={name}
                     onChangeText={setName}
                     style={styles.input}
                 />
-                <Button title="Salvar" onPress={handleSave} />
+                <ButtonGreen onPress={handleSave} >
+                    <ButtonText>Salvar</ButtonText>
+                </ButtonGreen>
             </View>
-        </View>
+        </ContainerMap>
     );
 };
 
@@ -108,7 +119,8 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     map: {
-        flex: 1,
+        height:'60%',
+        width: '100%',
     },
     form: {
         padding: 16,
