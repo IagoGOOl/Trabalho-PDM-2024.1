@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {View, Text, FlatList, TouchableOpacity, StyleSheet, Image, StatusBar} from 'react-native';
-import { useRouter } from 'expo-router';
+import {useFocusEffect, useRouter} from 'expo-router';
 import api from '../../utils/api';
 import {
     AuthorImage,
@@ -16,17 +16,22 @@ const PostsScreen = () => {
   const router = useRouter();
   const [posts, setPosts] = useState([]);
 
-  useEffect(() => {
+
+
     const fetchPosts = async () => {
-      try {
-        const response = await api.get('/post');
-        setPosts(response.data);
-      } catch (error) {
-        console.error('Erro ao buscar post:', error);
-      }
+        try {
+            const response = await api.get('/post');
+            setPosts(response.data);
+        } catch (error) {
+            console.error('Erro ao buscar post:', error);
+        }
     };
-    fetchPosts();
-  }, []);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchPosts();
+        }, [])
+    );
 
   const renderItem = ({ item }: any) => (
       <CardPost

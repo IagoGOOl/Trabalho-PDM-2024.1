@@ -30,7 +30,7 @@ export const InfoPost = styled.View`
 flex-direction: row;
     align-items: center;
     padding-left: 15px;
-`
+`;
 export const AuthorImage = styled.Image`
   width: 50px;
   height: 50px;
@@ -61,6 +61,13 @@ export const TextContend = styled.Text`
     padding: 0 15px;
    
 `;
+export const TextContendDetails = styled.Text`
+    font-size: 18px;
+    font-weight: 600;
+    color: #264929;
+    padding: 15px 0;
+   
+`;
 
 
 
@@ -80,10 +87,31 @@ export const TitleLight = styled.Text`
     padding: 20px 0;
 `;
 
+export const TitleGreen = styled.Text`
+    font-size: 30px;
+    font-weight: bold;
+    color: #56A142;
+    text-align: center;
+    padding: 20px 0;
+`;
+
+export const TitleGreenLight = styled.Text`
+    font-size: 25px;
+    color: #56A142;
+    text-align: center;
+`;
+
+export const TextGreen= styled.Text`
+    font-size: 16px;
+    font-weight: 600;
+    color: #56A142;
+    padding-top: 10px;
+`;
+
 export const ButtonGreen = styled.TouchableOpacity`
     background-color: #56A142;
     color: white;
-    padding: 10px 20px;
+    padding: 15px 20px;
     border-radius: 30px;
     margin-top: 20px;
     align-items: center; 
@@ -98,7 +126,7 @@ export const ButtonText = styled.Text`
 
 
 export const Input = styled.TextInput`
-  height: 50px;
+  //height: 50px;
   border-width: 1px;
   border-color: #BDBDBD;
   border-radius: 5px;
@@ -162,3 +190,58 @@ export const TabIconUser = styled.Image`
     height: 30px;
     margin-left: 5px;
 `;
+
+export const ButtonEdit = styled.TouchableOpacity`
+  padding: 8px;
+    align-items: center; 
+    border-radius: 5px;
+    border: solid 2px #56A142;
+`;
+
+export const ButtonTrash = styled.TouchableOpacity`
+  padding: 8px;
+    align-items: center; 
+    border-radius: 5px;
+    border: solid 2px #FF7256;
+`;
+
+// Commment and Post
+export const BoxComments = styled.View`
+    border: solid 2px #56A142;
+    border-radius: 20px;
+    padding: 10px;
+    margin: 5px 0;
+`;
+
+export const BoxContendComments = styled.View`
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;    
+`;
+
+
+
+
+
+
+export const BoxEdtDelete = styled.View`
+    gap: 10px;
+`;
+
+export const AuthorImageComment = styled.Image`
+  width: 30px;
+  height: 30px;
+  border-radius: 20px;
+ 
+`;
+
+
+export const TextContendComment = styled.Text`
+    font-size: 18px;
+    font-weight: 600;
+    color: #264929;
+    padding: 0 15px;
+    max-width: 300px;
+   
+`;
+

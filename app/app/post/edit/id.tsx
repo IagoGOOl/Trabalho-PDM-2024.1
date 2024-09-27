@@ -27,7 +27,7 @@ const EditPostScreen = () => {
         try {
             await api.put(`/post/${postId}`, { title, description });
             Alert.alert('Sucesso', 'Post atualizado com sucesso!');
-            router.back();
+            router.push('/(tabs)/profile');
         } catch (error) {
             console.error('Erro ao atualizar post:', error);
             Alert.alert('Erro', 'Não foi possível atualizar o post.');

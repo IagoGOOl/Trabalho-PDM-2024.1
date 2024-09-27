@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, FlatList, Alert, Image } from 'react-native';
-import { useRouter} from 'expo-router';
+import {useFocusEffect, useRouter} from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../utils/api';
 
@@ -29,7 +29,7 @@ const ProfileScreen = () => {
   const [posts, setPosts] = useState<Post[]>([]);
 
 
-  useEffect(() => {
+
     const fetchUserAndPosts = async () => {
       try {
         const response = await api.get<{ user: User }>('/user/me');
@@ -44,8 +44,15 @@ const ProfileScreen = () => {
         console.error('Erro ao buscar dados do usuário:', error);
       }
     };
-    fetchUserAndPosts();
-  }, []);
+
+
+
+
+    useFocusEffect(
+        React.useCallback(() => {
+            fetchUserAndPosts();
+        }, [])
+    );
 
 
 
