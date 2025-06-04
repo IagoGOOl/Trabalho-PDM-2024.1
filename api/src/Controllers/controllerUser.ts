@@ -10,7 +10,13 @@ export class UserController {
       const user = await prismaService.user.findUnique({
         where: { id },
       });
-      res.status(200).json({ user });
+
+      if (user) {
+        return res.status(200).json({user});
+      }
+      res.status(404).send({
+          message: "Usuário não encontrado."
+        });
     } catch (err) {
       res.status(500).json({ message: "Erro ao procurar por Usuário" });
     }
@@ -103,14 +109,23 @@ export class UserController {
   async updateImage(req: Request, res: Response) {
     const { filename } = req?.file || {};
     const id = req.userID;
-    const image = filename ? "http://localhost:3000/images/" + filename : null;
-    await prismaService.user.update({
+    const image = filename ? filename : null;
+    const user = await prismaService.user.update({
       where: { id },
       data: { image },
     });
-    res.status(200).json({
-      message: "Imagem de perfil salva com sucesso!",
-      image,
-    });
+
+    if (user) {
+      const image = user.image ? user.image : null;
+      
+      return res.status(200).json({
+        message: "Imagem de perfil salva com sucesso!",
+        image,
+      });
+    }
+    
+    res.status(404).send({
+      message: "Usuário não encontrado."
+    })
   }
 }

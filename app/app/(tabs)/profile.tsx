@@ -131,7 +131,7 @@ const ProfileScreen = () => {
                 <Image
                     source={
                         user.image
-                            ? { uri: user.image }
+                            ? { uri: `${api.defaults.baseURL}/images/${user.image}` }
                             : require('../../assets/icons/user.png')
                     }
                     style={styles.avatar}

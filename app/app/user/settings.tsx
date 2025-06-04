@@ -132,7 +132,7 @@ const SettingsScreen = () => {
                 <Image
                     source={
                         imageUri
-                            ? { uri: imageUri }
+                            ? { uri: `${api.defaults.baseURL}/images/${imageUri}` }
                             : require('../../assets/icons/user.png') // Certifique-se de que o caminho está correto
                     }
                     style={styles.avatar}

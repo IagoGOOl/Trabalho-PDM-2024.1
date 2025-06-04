@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getToken } from './auth';
 
 const api = axios.create({
-    baseURL: 'http://192.168.2.17:3000',
+    baseURL: 'http://localhost:3000', // Substituir "localhost" pelo endereço IP da máquina que está executando a API
 });
 
 api.interceptors.request.use(

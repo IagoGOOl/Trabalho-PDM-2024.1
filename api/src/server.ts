@@ -3,10 +3,14 @@ import router from './router/routes';
 import cors from 'cors'
 
 const app = express();
+const PORT = 3000;
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:' + PORT, // Substituir "localhost" pelo endereço IP da máquina que está executando a API
+    credentials: true,
+}));
 app.use(router);
 app.use('/images', express.static('./src/uploads'));
 
-app.listen(3000, () => console.log('Servidor na porta 3000'));
+app.listen(PORT, () => console.log('Servidor rodando na porta ' + PORT));
