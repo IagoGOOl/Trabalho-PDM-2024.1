@@ -318,4 +318,9 @@ export const ButtonLogout = styled.TouchableOpacity`
 
 `;
 
-8
+
+export const MainTitle = styled.Text`
+    font-size: 32;
+    color: #264929;
+    font-weight: 600;
+`

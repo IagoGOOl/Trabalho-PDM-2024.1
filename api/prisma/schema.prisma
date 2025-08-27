@@ -8,46 +8,47 @@ datasource db {
 }
 
 model User {
-  id           Int            @id @default(autoincrement())
+  id           Int           @id @default(autoincrement())
   name         String
-  email        String         @unique
+  email        String        @unique
   password     String
   image        String?
   posts        Post[]
   comments     Comment[]
-  instituicoes Instituicao[]  @relation("UserInstituicoes")
+  instituicoes Instituicao[] @relation("UserInstituicoes")
 
   @@map("user")
 }
+
 model Post {
-  id  Int @id @default(autoincrement())
-  title String @unique
+  id          Int    @id @default(autoincrement())
+  title       String @unique
   description String
-  authorId Int
+  authorId    Int
 
   author User @relation(fields: [authorId], references: [id])
 
-  comments Comment[]
+  comments    Comment[]
+  ingredients IngredientsOnPosts[]
 
   @@map("post")
 }
 
-
 model Instituicao {
-  id           Int     @id @default(autoincrement())
-  name         String
-  latitude     String
-  longitude    String
-  createdById  Int
-  createdBy    User    @relation("UserInstituicoes", fields: [createdById], references: [id])
+  id          Int    @id @default(autoincrement())
+  name        String
+  latitude    String
+  longitude   String
+  createdById Int
+  createdBy   User   @relation("UserInstituicoes", fields: [createdById], references: [id])
 
   @@map("instituicao")
 }
 
 model Comment {
-  id  Int @id @default(autoincrement())
+  id          Int    @id @default(autoincrement())
   description String
-  authorId Int
+  authorId    Int
 
   author User @relation(fields: [authorId], references: [id])
 
@@ -56,4 +57,25 @@ model Comment {
   post Post @relation(fields: [postId], references: [id])
 
   @@map("comment")
+}
+
+model Ingredient {
+  id    Int                  @id @default(autoincrement())
+  name  String
+  posts IngredientsOnPosts[]
+
+  deleted_at DateTime?
+
+  @@map("ingredients")
+}
+
+model IngredientsOnPosts {
+  id           Int        @id @default(autoincrement())
+  postId       Int?
+  ingredientId Int?
+
+  post       Post?       @relation(fields: [postId], references: [id])
+  ingredient Ingredient? @relation(fields: [ingredientId], references: [id])
+
+  @@map("ingredients_recipe_posts")
 }
