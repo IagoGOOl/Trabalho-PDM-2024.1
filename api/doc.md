@@ -605,6 +605,153 @@
 
 ---
 
+## Rotas de ingredientes
+
+### GET /ingredient
+
+- **Descrição:** Retorna todos os ingredientes que não foram deletados.
+- **Requer autenticação:** Não
+- **Resposta de Sucesso (200):**
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Tomate",
+    "deleted_at": null
+  },
+  {
+    "id": 2,
+    "name": "Cebola",
+    "deleted_at": null
+  }
+]
+```
+
+- **Possíveis Erros:**
+  - 500 Internal Server Error: "Erro ao buscar os ingredientes."
+
+---
+
+### GET /ingredient/:id
+
+- **Descrição:** Retorna um ingrediente específico pelo ID.
+- **Requer autenticação:** Não
+- **Parâmetros de Rota:**
+  - `id` (number): ID do ingrediente.
+- **Resposta de Sucesso (200):**
+
+```json
+{
+  "id": 1,
+  "name": "Tomate",
+  "deleted_at": null
+}
+```
+
+- **Possíveis Erros:**
+  - 500 Internal Server Error: "Erro ao buscar o ingrediente."
+
+---
+
+### POST /ingredient
+
+- **Descrição:** Cria um novo ingrediente.
+- **Requer autenticação:** Não
+- **Corpo da Requisição:**
+
+```json
+{
+  "name": "Alface"
+}
+```
+
+- **Resposta de Sucesso (201):**
+
+```json
+{
+  "id": 3,
+  "name": "Alface",
+  "deleted_at": null
+}
+```
+
+- **Possíveis Erros:**
+  - 500 Internal Server Error: "Erro ao criar o ingrediente."
+
+---
+
+### PUT /ingredient/:id
+
+- **Descrição:** Atualiza o nome de um ingrediente específico.
+- **Requer autenticação:** Não
+- **Parâmetros de Rota:**
+  - `id` (number): ID do ingrediente.
+- **Corpo da Requisição:**
+
+```json
+{
+  "name": "Tomate Cereja"
+}
+```
+
+- **Resposta de Sucesso (200):**
+
+```json
+{
+  "id": 1,
+  "name": "Tomate Cereja",
+  "deleted_at": null
+}
+```
+
+- **Possíveis Erros:**
+  - 500 Internal Server Error: "Erro ao atualizar os ingredientes."
+
+---
+
+### DELETE /ingredient/:id
+
+- **Descrição:** Marca um ingrediente como deletado (soft delete).
+- **Requer autenticação:** Não
+- **Parâmetros de Rota:**
+  - `id` (number): ID do ingrediente.
+- **Resposta de Sucesso (200):**
+
+```json
+{
+  "id": 1,
+  "name": "Tomate",
+  "deleted_at": "2025-08-27T00:00:00.000Z"
+}
+```
+
+- **Possíveis Erros:**
+  - 500 Internal Server Error: "Erro ao deletar o ingrediente."
+
+---
+
+### DELETE /post/:postId/ingredient/:ingredientId
+
+- **Descrição:** Desconecta um ingrediente de uma postagem específica.
+- **Requer autenticação:** Não
+- **Parâmetros de Rota:**
+  - `postId` (number): ID da postagem.
+  - `ingredientId` (number): ID do ingrediente.
+- **Resposta de Sucesso (200):**
+
+```json
+{
+  "message": "Ingrediente desconectado da postagem com sucesso"
+}
+```
+
+- **Possíveis Erros:**
+  - 404 Not Found: "Ingrediente não encontrado na postagem"
+  - 500 Internal Server Error: "Não foi possível desconectar o ingrediente"
+
+
+
 ## Autenticação
 
 - **Método de Autenticação:** Token JWT
